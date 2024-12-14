@@ -1,0 +1,52 @@
+AutoBackup v2:
+Changelog - Modificaciones realizadas al script original
+Nueva funcionalidad:
+El script ahora permite subir directamente archivos comprimidos (.zip o .rar) a un servidor FTP sin necesidad de comprimir previamente una carpeta.
+Cambios principales:
+Eliminación de la lógica de compresión:
+
+Eliminada la creación de un directorio temporal y la lógica para comprimir carpetas en un archivo ZIP.
+Eliminado el uso de la biblioteca pyzipper para manejar archivos comprimidos con contraseña.
+Eliminada la barra de progreso para la compresión, ya que no se realiza este proceso.
+Adición de la carpeta subir:
+
+Ahora se utiliza una carpeta fija llamada subir como fuente de archivos comprimidos.
+Se valida si la carpeta existe y si contiene archivos .zip o .rar. Si no es válida, se muestra un mensaje de error y el programa termina.
+Renombrado de archivos al subirlos:
+
+Concatenación de la fecha actual al nombre original de cada archivo en el formato: nombre_original-dia-mes-año.extensión.
+Implementación de lógica para preservar la extensión original del archivo (.zip o .rar).
+Simplificación de la lógica de transferencia:
+
+Ahora se procesan directamente los archivos encontrados en la carpeta subir.
+Barra de progreso (tqdm) adaptada exclusivamente para la transferencia de archivos al servidor FTP.
+Manejo de múltiples archivos:
+
+Iteración sobre todos los archivos .zip o .rar encontrados en la carpeta subir para subirlos uno por uno.
+Errores controlados:
+
+Se implementó manejo de excepciones para:
+Fallos en la conexión al servidor FTP.
+Fallos al subir un archivo específico.
+Fallos al cerrar la conexión FTP.
+Mensajes de estado mejorados:
+
+Mensajes claros para cada etapa del proceso: validación de la carpeta, detección de archivos, inicio de subida, progreso y finalización.
+Indicaciones específicas si no se encuentran archivos válidos.
+Código eliminado o reemplazado:
+Eliminado:
+
+Creación y limpieza del directorio temporal (/tmp/backup_temp).
+Compresión con contraseña usando pyzipper.
+Generación dinámica del contenido a comprimir desde una carpeta arbitraria proporcionada por el usuario.
+Reemplazado:
+
+Lógica para compresión por iteración sobre archivos existentes en la carpeta subir.
+Generación de nombres de archivos comprimidos en función de la carpeta respaldada por generación basada en los archivos ya comprimidos.
+Resumen del nuevo flujo:
+Verifica si existe la carpeta subir.
+Obtiene los archivos comprimidos (.zip y .rar) dentro de la carpeta.
+Para cada archivo:
+Renombra el archivo agregando la fecha actual al nombre.
+Lo sube al servidor FTP con barra de progreso.
+Finaliza cerrando la conexión FTP.
